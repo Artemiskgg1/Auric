@@ -86,7 +86,7 @@ export default function Map() {
   return (
     <div
       id="map"
-      style={{ width: "70vw", height: "70vh", borderRadius: "10px" }}
+      style={{ width: "50vw", height: "65vh", borderRadius: "10px" }}
     ></div>
   );
 }
