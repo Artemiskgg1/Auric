@@ -10,7 +10,9 @@ function Logo() {
         height={32}
         className="hidden lg:block"
       />
-      <p className="font-semibold text-xl hidden lg:block">AURIC</p>
+      <p className="font-semibold font-quichesans text-xl hidden lg:block">
+        AURIC
+      </p>
     </div>
   );
 }
