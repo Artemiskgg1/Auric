@@ -66,6 +66,10 @@
   body {
     @apply bg-background text-foreground antialiased;
   }
+  @font-face {
+    font-family: "quichesans";
+    src: url("/fonts/quichesans.otf") format("truetype");
+  }
 }
 
 @layer components {

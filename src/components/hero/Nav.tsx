@@ -82,33 +82,43 @@ const Nav = () => {
 
       {/* Mobile Menu */}
       {menuOpen && (
-        <div className="md:hidden bg-white shadow-md flex flex-col space-y-4 px-6 py-4">
+        <div className="md:hidden bg-white shadow-md flex flex-col px-4 py-4 space-y-2 w-full">
           {navLinks.map((link, index) => (
-            <div key={index} className="relative">
+            <div key={index} className="relative w-full">
               {link.dropdown ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="ghost"
-                      className="flex justify-between w-full text-gray-900 font-medium"
+                      className="flex items-center justify-between w-full text-gray-900 font-medium px-4 py-2 rounded-md border border-gray-200"
                     >
                       {link.text}
                       <ChevronDown className="w-4 h-4" />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-full mt-1">
+                  <DropdownMenuContent className="w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg">
                     <DropdownMenuItem asChild>
-                      <Link href="#">Option 1</Link>
+                      <Link
+                        href="#"
+                        className="block w-full px-4 py-2 hover:bg-gray-100"
+                      >
+                        Option 1
+                      </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link href="#">Option 2</Link>
+                      <Link
+                        href="#"
+                        className="block w-full px-4 py-2 hover:bg-gray-100"
+                      >
+                        Option 2
+                      </Link>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               ) : (
                 <Link
                   href={link.href}
-                  className="block text-gray-900 font-medium hover:underline"
+                  className="block w-full px-4 py-2 text-gray-900 font-medium rounded-md hover:bg-gray-100"
                   onClick={() => setMenuOpen(false)}
                 >
                   {link.text}
@@ -116,11 +126,15 @@ const Nav = () => {
               )}
             </div>
           ))}
-          <Link href="/sign-up">
-            <Button className="bg-blue-600 text-white px-4 py-2 rounded-full font-medium text-center w-full">
-              Sign up
-            </Button>
-          </Link>
+
+          {/* Sign-up Button */}
+          <div className="px-4">
+            <Link href="/sign-up">
+              <Button className="w-full bg-blue-600 text-white px-4 py-2 rounded-md font-medium text-center">
+                Sign up
+              </Button>
+            </Link>
+          </div>
         </div>
       )}
     </nav>
