@@ -8,9 +8,9 @@ function Logo() {
         alt="AURIC Logo"
         width={32}
         height={32}
-        className="hidden lg:block"
+        className="block"
       />
-      <p className="font-semibold font-quichesans text-xl hidden lg:block">
+      <p className="font-semibold font-quichesans text-lg md:text-xl block">
         AURIC
       </p>
     </div>

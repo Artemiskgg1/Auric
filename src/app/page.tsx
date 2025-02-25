@@ -1,3 +1,4 @@
+import Footer from "@/components/hero/Footer";
 import Hero from "@/components/hero/Hero";
 import Nav from "@/components/hero/Nav";
 
@@ -10,6 +11,7 @@ export default function Home() {
       <div className="flex-1 overflow-y-auto">
         <Hero />
       </div>
+      <Footer />
     </div>
   );
 }

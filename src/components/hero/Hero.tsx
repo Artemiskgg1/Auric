@@ -14,7 +14,7 @@ export default function Hero() {
           </span>
         </h1>
 
-        <p className="max-w-2xl text-lg md:text-lg mb-2 text-gray-700">
+        <p className="max-w-2xl text-sm md:text-lg mb-2 text-gray-700">
           {
             "Empowering Disaster Response with AI-Powered Insights. Stay ahead of emergencies with real-time predictions, risk analysis, and intelligent response strategies."
           }
