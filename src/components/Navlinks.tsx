@@ -1,24 +1,23 @@
 "use client";
 
+import { useState, useEffect } from "react";
+import { useUser } from "@clerk/nextjs";
 import {
-  Clapperboard,
   Compass,
-  Heart,
   Home,
-  MessageCircle,
-  PlusSquare,
-  Search,
   OctagonAlert,
   Users,
   HandCoins,
   Newspaper,
+  Package,
+  Eye,
 } from "lucide-react";
 import Link from "next/link";
 import { buttonVariants } from "./ui/button";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
-const links = [
+const baseLinks = [
   { name: "Dashboard", href: "/dashboard", icon: Home },
   {
     name: "Alerts",
@@ -47,10 +46,34 @@ const links = [
 
 function NavLinks() {
   const pathname = usePathname();
+  const { user } = useUser();
+  const [role, setRole] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (user) {
+      setRole(user.publicMetadata.role as string);
+    }
+  }, [user]);
+
+  const roleBasedLinks = [...baseLinks];
+
+  if (role === "admin") {
+    roleBasedLinks.push({
+      name: "Inventory",
+      href: "/dashboard/inventory",
+      icon: Package,
+    });
+  } else {
+    roleBasedLinks.push({
+      name: "View Resources",
+      href: "/dashboard/resources",
+      icon: Eye,
+    });
+  }
 
   return (
     <>
-      {links.map((link) => {
+      {roleBasedLinks.map((link) => {
         const LinkIcon = link.icon;
         const isActive = pathname === link.href;
 
