@@ -13,7 +13,7 @@ export default function Footer() {
           Predict & Respond Effectively
         </p>
       </div>
-      <div className=" text-xs md:text-sm text-gray-500">
+      <div className=" text-xs md:text-sm text-gray-500 text-center">
         <p>Created by Team - Just the two of Us</p>
         <p>© {new Date().getFullYear()} All Rights Reserved</p>
       </div>
