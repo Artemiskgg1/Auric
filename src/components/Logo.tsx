@@ -1,26 +1,17 @@
-import { SwitchCamera } from "lucide-react";
-import Link from "next/link";
-import { buttonVariants } from "./ui/button";
-// import { calSans } from "@/app/fonts";
+import Image from "next/image";
 
 function Logo() {
   return (
-    <Link
-      href={"/dashboard"}
-      className={buttonVariants({
-        className:
-          "hidden md:flex navLink !mb-10 lg:hover:bg-transparent lg:!p-0",
-        variant: "ghost",
-        size: "lg",
-      })}
-    >
-      <p
-        className={`font-semibold text-xl hidden lg:block `}
-        // ${calSans.className}
-      >
-        AURIC
-      </p>
-    </Link>
+    <div className="flex items-center gap-2 mb-4 ml-2.5">
+      <Image
+        src="/images/logo.png"
+        alt="AURIC Logo"
+        width={32}
+        height={32}
+        className="hidden lg:block"
+      />
+      <p className="font-semibold text-xl hidden lg:block">AURIC</p>
+    </div>
   );
 }
 
