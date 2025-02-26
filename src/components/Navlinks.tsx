@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { useUser } from "@clerk/nextjs";
 import {
-  Compass,
   Home,
   OctagonAlert,
   Users,
@@ -26,11 +25,6 @@ const baseLinks = [
     hideOnMobile: true,
   },
   { name: "Community", href: "/dashboard/community", icon: Users },
-  {
-    name: "Explore",
-    href: "/dashboard/explore",
-    icon: Compass,
-  },
   {
     name: "Support",
     href: "/dashboard/support",
