@@ -1,9 +1,12 @@
 import React from "react";
+import EarthquakeMap from "@/components/Map";
 
 const page = () => {
   return (
     <div>
-      <div></div>
+      <div>
+        <EarthquakeMap />
+      </div>
     </div>
   );
 };
