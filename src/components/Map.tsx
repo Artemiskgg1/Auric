@@ -17,12 +17,25 @@ export default function EarthquakeMap() {
 
     loader.load().then(() => {
       const google = window.google;
-      const mapInstance = new google.maps.Map(
+
+      const mapBounds = new google.maps.LatLngBounds(
+        { lat: -85, lng: -180 }, 
+        { lat: 85, lng: 180 }
+      );
+
+      const mapInstance = new google.maps.Map(          
         document.getElementById("map") as HTMLElement,
         {
           center: { lat: 20, lng: 0 }, // Default to the world view
           zoom: 2,
           mapTypeId: "terrain",
+          // mapTypeId: "hybrid",
+          // mapTypeId: "satellite",
+          // mapTypeId: "roadmap",
+          restriction: {
+            latLngBounds: mapBounds, 
+            strictBounds: true, 
+          },
         }
       );
 
@@ -55,10 +68,24 @@ export default function EarthquakeMap() {
             path: google.maps.SymbolPath.CIRCLE,
             scale: 10 + magnitude * 2, // Marker size based on magnitude
             fillColor: getColor(magnitude),
-            fillOpacity: 0.6,
-            strokeWeight: 1,
+            fillOpacity: 0.6, 
+            strokeWeight: 0.8,
           },
         });
+
+        let isVisible = true;
+        setInterval(() => {
+          if (marker.getMap()) {
+            isVisible = !isVisible;
+            marker.setIcon({
+              path: google.maps.SymbolPath.CIRCLE,
+              scale: 10 + magnitude * 2,
+              fillColor: getColor(magnitude),
+              fillOpacity: isVisible ? 0.6 : 0.2, 
+              strokeWeight: isVisible ? 0.8 : 0.2,
+            });
+          }
+        }, 800);
 
         const infoWindow = new google.maps.InfoWindow({
           content: `<div class="p-2">
@@ -80,10 +107,7 @@ export default function EarthquakeMap() {
   };
 
   return (
-    <div className="h-screen w-full">
-      <h1 className="text-center text-2xl font-bold p-4 bg-black text-white">
-        Live Earthquake Tracker
-      </h1>
+    <div className="h-screen w-full"> 
       <div id="map" className="w-full h-[90vh]"></div>
     </div>
   );
