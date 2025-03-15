@@ -43,7 +43,7 @@ export default function EarthquakeMap() {
       fetchEarthquakes(mapInstance);
       const interval = setInterval(
         () => fetchEarthquakes(mapInstance),
-        3600000
+        600
       ); // Auto-refresh every hour
       return () => clearInterval(interval);
     });
