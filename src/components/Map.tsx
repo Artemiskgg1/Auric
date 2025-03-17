@@ -88,7 +88,7 @@ export default function EarthquakeMap() {
         }, 800);
 
         const infoWindow = new google.maps.InfoWindow({
-          content: `<div class="p-2">
+          content: `<div class="dark:text-neutral-950 p-2">
                       <strong>Location:</strong> ${place}<br>
                       <strong>Magnitude:</strong> ${magnitude}<br>
                       <strong>Time:</strong> ${time}
