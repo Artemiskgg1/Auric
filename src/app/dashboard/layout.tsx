@@ -9,7 +9,7 @@ export default function DashboardLayout({
   return (
     <div className="flex h-screen relative flex-col md:flex-row md:overflow-hidden">
       {/* UserButton placed outside flex-grow container */}
-      <div className="absolute top-4 right-4 z-50">
+      <div className="absolute top-4 right-4 z-50 ">
         <UserButton />
       </div>
 
@@ -17,7 +17,7 @@ export default function DashboardLayout({
         <SideNav />
       </div>
 
-      <div className="flex-grow md:mt-0 flex-1 w-full md:overflow-y-auto sm:p-6 md:p-4 max-w-7xl mx-auto">
+      <div className="flex-grow md:mt-14 flex-1 w-full md:overflow-y-auto sm:px-6 md:px-4 max-w-7xl mx-auto">
         {children}
       </div>
     </div>

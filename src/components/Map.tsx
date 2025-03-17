@@ -13,25 +13,69 @@ export default function EarthquakeMap() {
     const loader = new Loader({
       apiKey: GOOGLE_API_KEY,
       version: "weekly",
+      libraries: ["places"],
     });
 
     loader.load().then(() => {
       const google = window.google;
+
+      const mapBounds = new google.maps.LatLngBounds(
+        { lat: -85, lng: -180 },
+        { lat: 85, lng: 180 }
+      );
+
       const mapInstance = new google.maps.Map(
         document.getElementById("map") as HTMLElement,
         {
-          center: { lat: 20, lng: 0 }, // Default to the world view
+          center: { lat: 20, lng: 0 },
           zoom: 2,
           mapTypeId: "terrain",
+          restriction: {
+            latLngBounds: mapBounds,
+            strictBounds: true,
+          },
         }
       );
 
       setMap(mapInstance);
+
+      // ✅ Autocomplete Setup outside cleanup block
+      const input = document.getElementById("pac-input") as HTMLInputElement;
+      const autocomplete = new google.maps.places.Autocomplete(input, {
+        fields: ["place_id", "geometry", "name", "formatted_address"],
+      });
+      autocomplete.bindTo("bounds", mapInstance);
+
+      const infoWindow = new google.maps.InfoWindow();
+      const marker = new google.maps.Marker({ map: mapInstance });
+
+      autocomplete.addListener("place_changed", () => {
+        infoWindow.close();
+        const place = autocomplete.getPlace();
+
+        if (!place.geometry || !place.geometry.location) {
+          alert("No details available for input: '" + place.name + "'");
+          return;
+        }
+
+        mapInstance.setCenter(place.geometry.location);
+        mapInstance.setZoom(10);
+
+        marker.setPosition(place.geometry.location);
+        marker.setVisible(true);
+
+        infoWindow.setContent(`
+          <div>
+            <strong>${place.name}</strong><br>
+            ${place.formatted_address || ""}
+          </div>
+        `);
+        infoWindow.open(mapInstance, marker);
+      });
+
       fetchEarthquakes(mapInstance);
-      const interval = setInterval(
-        () => fetchEarthquakes(mapInstance),
-        3600000
-      ); // Auto-refresh every hour
+
+      const interval = setInterval(() => fetchEarthquakes(mapInstance), 60000);
       return () => clearInterval(interval);
     });
   }, []);
@@ -53,15 +97,29 @@ export default function EarthquakeMap() {
           map: mapInstance,
           icon: {
             path: google.maps.SymbolPath.CIRCLE,
-            scale: 10 + magnitude * 2, // Marker size based on magnitude
+            scale: 10 + magnitude * 2,
             fillColor: getColor(magnitude),
             fillOpacity: 0.6,
-            strokeWeight: 1,
+            strokeWeight: 0.8,
           },
         });
 
+        let isVisible = true;
+        setInterval(() => {
+          if (marker.getMap()) {
+            isVisible = !isVisible;
+            marker.setIcon({
+              path: google.maps.SymbolPath.CIRCLE,
+              scale: 10 + magnitude * 2,
+              fillColor: getColor(magnitude),
+              fillOpacity: isVisible ? 0.6 : 0.2,
+              strokeWeight: isVisible ? 0.8 : 0.2,
+            });
+          }
+        }, 800);
+
         const infoWindow = new google.maps.InfoWindow({
-          content: `<div class="p-2">
+          content: `<div class="dark:text-neutral-950 p-2">
                       <strong>Location:</strong> ${place}<br>
                       <strong>Magnitude:</strong> ${magnitude}<br>
                       <strong>Time:</strong> ${time}
@@ -80,10 +138,13 @@ export default function EarthquakeMap() {
   };
 
   return (
-    <div className="h-screen w-full">
-      <h1 className="text-center text-2xl font-bold p-4 bg-black text-white">
-        Live Earthquake Tracker
-      </h1>
+    <div className="h-screen w-full relative">
+      <input
+        id="pac-input"
+        className="absolute top-4 left-4 z-10 p-2 rounded-lg shadow-lg bg-white w-72 focus:outline-none"
+        type="text"
+        placeholder="Search for places"
+      />
       <div id="map" className="w-full h-[90vh]"></div>
     </div>
   );
