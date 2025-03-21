@@ -1,2 +1,1 @@
-![:name](https://count.getloli.com/@:name)
-<!-- this is for pr -->
+<img src="https://count.getloli.com/@:name?theme=booru-vp" alt=":name" />

@@ -1,0 +1,33 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")  
+}
+
+model Warehouse {
+  id        String    @id @default(uuid())
+  name      String    @unique
+  location  String
+  inventory Inventory[]
+  createdAt DateTime  @default(now())
+}
+
+model Inventory {
+  id          String    @id @default(uuid())
+  name        String
+  quantity    Int
+  category    String
+  status      String
+  warehouse   Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Cascade)
+  warehouseId String
+  createdAt   DateTime  @default(now())
+}
