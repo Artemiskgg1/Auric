@@ -47,8 +47,15 @@ const InventoryTable = ({ warehouses }: InventoryTableProps) => {
       try {
         const response = await fetch("/api/inventory");
         const data = await response.json();
+
         if (Array.isArray(data)) {
-          setItems(data);
+          const mappedItems = data.map((item) => ({
+            ...item,
+            warehouse:
+              item.warehouse ||
+              warehouses.find((wh) => wh.id === item.warehouseId),
+          }));
+          setItems(mappedItems);
         } else {
           console.error("Fetched data is not an array:", data);
           setItems([]);
@@ -58,7 +65,8 @@ const InventoryTable = ({ warehouses }: InventoryTableProps) => {
       }
     };
     fetchInventory();
-  }, []);
+  }, [warehouses]); // Include warehouses in the dependency array
+  // Include warehouses in the dependency array
 
   useEffect(() => {
     console.log("Warehouses:", warehouses);
@@ -80,11 +88,14 @@ const InventoryTable = ({ warehouses }: InventoryTableProps) => {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Warehouses</SelectItem>
-            {warehouses.map((wh) => (
-              <SelectItem key={wh.id} value={wh.id}>
-                {wh.name}
-              </SelectItem>
-            ))}
+            {Array.from(
+              new Set(items.map((item) => item.warehouse?.name).filter(Boolean))
+            ) // Ensure no undefined values
+              .map((warehouseName) => (
+                <SelectItem key={warehouseName} value={warehouseName as string}>
+                  {warehouseName}
+                </SelectItem>
+              ))}
           </SelectContent>
         </Select>
       </div>
@@ -106,7 +117,7 @@ const InventoryTable = ({ warehouses }: InventoryTableProps) => {
                 (item) =>
                   item.name.toLowerCase().includes(search.toLowerCase()) &&
                   (selectedWarehouse === "all" ||
-                    (item.warehouse && item.warehouse.id === selectedWarehouse)) // Fix here
+                    item.warehouse?.name === selectedWarehouse) // ✅ Match with warehouse?.name
               )
               .map((item) => {
                 return (
