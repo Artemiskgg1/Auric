@@ -10,7 +10,7 @@ export function ImagesSliderDemo() {
     "https://images.unsplash.com/photo-1482189349482-3defd547e0e9?q=80&w=2848&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   ];
   return (
-    <ImagesSlider className="h-[38.5rem]" images={images}>
+    <ImagesSlider className="md:h-[40rem] h-[44rem]" images={images}>
       <motion.div
         initial={{
           opacity: 0,
@@ -23,9 +23,9 @@ export function ImagesSliderDemo() {
         transition={{
           duration: 0.6,
         }}
-        className="z-50 flex flex-col justify-center items-center"
+        className="z-50 flex flex-col justify-center items-center px-5 md:px-0"
       >
-        <motion.h1 className="font-bold text-xl md:text-6xl text-center bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 py-4">
+        <motion.h1 className="font-bold text-xl  md:text-6xl text-center bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 py-4">
           <div className="text-3xl md:text-7xl font-bold mb-4 font-quichesans">
             Visualize the disasters in{" "}
             <span className="bg-gradient-to-r from-blue-600 via-blue-400 to-blue-500 text-transparent bg-clip-text">

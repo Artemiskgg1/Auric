@@ -4,7 +4,7 @@ import { Github, Linkedin } from "lucide-react";
 
 export default function Footer() {
   return (
-    <div className="h-24 md:mx-8 rounded-xl  px-6 flex justify-between items-end text-zinc-900  bg-gradient-to-b from-white via-[#F4F9FF] to-[#E0ECFF] p-5">
+    <div className="h-16 rounded-xl  md:px-16 px-6 flex justify-between items-end text-zinc-900  bg-gradient-to-b from-white via-[#F4F9FF] to-[#E0ECFF] p-3">
       <div>
         <h2 className="text-lg font-semibold hidden md:block">
           AI Disaster Response

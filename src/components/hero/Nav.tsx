@@ -24,7 +24,7 @@ const Nav = () => {
   const toggleMenu = () => setMenuOpen((prev) => !prev);
 
   return (
-    <nav className="fixed top-0 rounded-lg w-full z-20 bg-gradient-to-b from-white via-[#F4F9FF] to-[#E0ECFF]  text-zinc-900">
+    <nav className="fixed top-0 w-full z-20 bg-gradient-to-b from-white via-[#F4F9FF] to-[#E0ECFF]  text-zinc-900">
       <div className="flex items-center justify-between px-6 py-3 h-16 md:mx-8">
         <div className="mt-1 pr-8 border-r border-gray-200 h-[80%] flex items-start">
           <Logo />
