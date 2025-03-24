@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
 
-const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY || "";
+const GOOGLE_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_API_KEY || "";
 const USGS_EARTHQUAKE_API =
   "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson";
 
@@ -13,7 +13,7 @@ export default function EarthquakeMap() {
     const loader = new Loader({
       apiKey: GOOGLE_API_KEY,
       version: "weekly",
-      libraries: ["places"],
+      libraries: [],
     });
 
     loader.load().then(() => {
@@ -38,41 +38,6 @@ export default function EarthquakeMap() {
       );
 
       setMap(mapInstance);
-
-      // ✅ Autocomplete Setup outside cleanup block
-      const input = document.getElementById("pac-input") as HTMLInputElement;
-      const autocomplete = new google.maps.places.Autocomplete(input, {
-        fields: ["place_id", "geometry", "name", "formatted_address"],
-      });
-      autocomplete.bindTo("bounds", mapInstance);
-
-      const infoWindow = new google.maps.InfoWindow();
-      const marker = new google.maps.Marker({ map: mapInstance });
-
-      autocomplete.addListener("place_changed", () => {
-        infoWindow.close();
-        const place = autocomplete.getPlace();
-
-        if (!place.geometry || !place.geometry.location) {
-          alert("No details available for input: '" + place.name + "'");
-          return;
-        }
-
-        mapInstance.setCenter(place.geometry.location);
-        mapInstance.setZoom(10);
-
-        marker.setPosition(place.geometry.location);
-        marker.setVisible(true);
-
-        infoWindow.setContent(`
-          <div>
-            <strong>${place.name}</strong><br>
-            ${place.formatted_address || ""}
-          </div>
-        `);
-        infoWindow.open(mapInstance, marker);
-      });
-
       fetchEarthquakes(mapInstance);
 
       const interval = setInterval(() => fetchEarthquakes(mapInstance), 60000);
@@ -137,15 +102,5 @@ export default function EarthquakeMap() {
     return magnitude >= 5 ? "#ff0000" : magnitude >= 3 ? "#ffa500" : "#00ff00";
   };
 
-  return (
-    <div className="h-screen w-full relative">
-      <input
-        id="pac-input"
-        className="absolute top-4 left-4 z-10 p-2 rounded-lg shadow-lg bg-white w-72 focus:outline-none"
-        type="text"
-        placeholder="Search for places"
-      />
-      <div id="map" className="w-full h-[90vh]"></div>
-    </div>
-  );
+  return <div id="map" className="w-full h-screen"></div>;
 }
