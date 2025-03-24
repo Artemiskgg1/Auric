@@ -13,21 +13,20 @@ datasource db {
   url      = env("DATABASE_URL")  
 }
 
-model Warehouse {
-  id        String    @id @default(uuid())
-  name      String    @unique
-  location  String
-  inventory Inventory[]
-  createdAt DateTime  @default(now())
+model Inventory {
+  id        String   @id @default(uuid())
+  name      String
+  quantity  Int
+  category  String
+  status    String
+  warehouse Warehouse @relation(fields: [warehouseId], references: [id])
+  warehouseId String
 }
 
-model Inventory {
-  id          String    @id @default(uuid())
-  name        String
-  quantity    Int
-  category    String
-  status      String
-  warehouse   Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Cascade)
-  warehouseId String
-  createdAt   DateTime  @default(now())
+model Warehouse {
+  id        String   @id @default(uuid())
+  name      String
+  location  String
+  inventory Inventory[]
 }
+

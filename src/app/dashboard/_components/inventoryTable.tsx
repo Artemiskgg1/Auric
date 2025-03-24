@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -16,7 +16,6 @@ import {
   TableRow,
   TableCell,
 } from "@/components/ui/table";
-import { useUser } from "@clerk/nextjs";
 import { Pencil, Trash2 } from "lucide-react";
 
 interface Warehouse {
@@ -24,38 +23,50 @@ interface Warehouse {
   name: string;
 }
 
+export type InventoryItem = {
+  id: string;
+  name: string;
+  quantity: number;
+  category: string;
+  status: string;
+  warehouseId: string;
+  warehouse?: Warehouse; // ✅ Add this
+};
+
 interface InventoryTableProps {
   warehouses: Warehouse[];
 }
 
 const InventoryTable = ({ warehouses }: InventoryTableProps) => {
-  const { user } = useUser();
+  const [items, setItems] = useState<InventoryItem[]>([]);
   const [search, setSearch] = useState("");
   const [selectedWarehouse, setSelectedWarehouse] = useState("all");
 
-  const [items, setItems] = useState([
-    {
-      id: 1,
-      name: "Medical Kit",
-      quantity: 50,
-      category: "Medical",
-      status: "Available",
-      warehouseId: "1",
-    },
-    {
-      id: 2,
-      name: "Tents",
-      quantity: 20,
-      category: "Shelter",
-      status: "Low Stock",
-      warehouseId: "2",
-    },
-  ]);
+  useEffect(() => {
+    const fetchInventory = async () => {
+      try {
+        const response = await fetch("/api/inventory");
+        const data = await response.json();
+        if (Array.isArray(data)) {
+          setItems(data);
+        } else {
+          console.error("Fetched data is not an array:", data);
+          setItems([]);
+        }
+      } catch (error) {
+        console.error("Error fetching inventory:", error);
+      }
+    };
+    fetchInventory();
+  }, []);
 
-  const isAdmin = user?.publicMetadata?.role === "admin";
+  useEffect(() => {
+    console.log("Warehouses:", warehouses);
+    console.log("Inventory Items:", items);
+  }, [warehouses, items]);
 
   return (
-    <div className="container mx-auto p-6 pt-0">
+    <div className="container mx-auto p-6">
       <div className="flex gap-4 mb-4">
         <Input
           placeholder="Search inventory..."
@@ -82,12 +93,11 @@ const InventoryTable = ({ warehouses }: InventoryTableProps) => {
         <Table className="table-fixed min-w-full">
           <TableHeader>
             <TableRow>
-              <TableHead className="w-1/5">Name</TableHead>
-              <TableHead className="w-1/6">Quantity</TableHead>
-              <TableHead className="w-1/6">Category</TableHead>
-              <TableHead className="w-1/5">Warehouse</TableHead>
-              <TableHead className="w-1/6">Status</TableHead>
-              {isAdmin && <TableHead className="w-1/6">Actions</TableHead>}
+              <TableHead>Name</TableHead>
+              <TableHead>Quantity</TableHead>
+              <TableHead>Category</TableHead>
+              <TableHead>Warehouse</TableHead>
+              <TableHead>Status</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -96,40 +106,19 @@ const InventoryTable = ({ warehouses }: InventoryTableProps) => {
                 (item) =>
                   item.name.toLowerCase().includes(search.toLowerCase()) &&
                   (selectedWarehouse === "all" ||
-                    item.warehouseId === selectedWarehouse)
+                    (item.warehouse && item.warehouse.id === selectedWarehouse)) // Fix here
               )
-              .map((item) => (
-                <TableRow key={item.id}>
-                  <TableCell>{item.name}</TableCell>
-                  <TableCell>{item.quantity}</TableCell>
-                  <TableCell>{item.category}</TableCell>
-                  <TableCell>
-                    {warehouses.find((wh) => wh.id === item.warehouseId)
-                      ?.name || "Unknown"}
-                  </TableCell>
-                  <TableCell>
-                    <span
-                      className={`px-2 py-1 text-xs font-semibold ${
-                        item.status === "Available"
-                          ? "text-green-600"
-                          : "text-red-600"
-                      }`}
-                    >
-                      {item.status}
-                    </span>
-                  </TableCell>
-                  {isAdmin && (
-                    <TableCell>
-                      <Button variant="ghost">
-                        <Pencil className="w-4 h-4" />
-                      </Button>
-                      <Button variant="ghost">
-                        <Trash2 className="w-4 h-4 text-red-500" />
-                      </Button>
-                    </TableCell>
-                  )}
-                </TableRow>
-              ))}
+              .map((item) => {
+                return (
+                  <TableRow key={item.id}>
+                    <TableCell>{item.name}</TableCell>
+                    <TableCell>{item.quantity}</TableCell>
+                    <TableCell>{item.category}</TableCell>
+                    <TableCell>{item.warehouse?.name || "Unknown"}</TableCell>
+                    <TableCell>{item.status}</TableCell>
+                  </TableRow>
+                );
+              })}
           </TableBody>
         </Table>
       </div>
