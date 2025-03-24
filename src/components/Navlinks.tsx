@@ -36,38 +36,43 @@ const baseLinks = [
     icon: Newspaper,
     hideOnMobile: true,
   },
+  {
+    name: "Inventory",
+    href: "/dashboard/inventory",
+    icon: Package,
+  },
 ];
 
 function NavLinks() {
   const pathname = usePathname();
-  const { user } = useUser();
-  const [role, setRole] = useState<string | null>(null);
+  // const { user } = useUser();
+  // const [role, setRole] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (user) {
-      setRole(user.publicMetadata.role as string);
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if (user) {
+  //     setRole(user.publicMetadata.role as string);
+  //   }
+  // }, [user]);
 
-  const roleBasedLinks = [...baseLinks];
+  // const roleBasedLinks = [...baseLinks];
 
-  if (role === "admin") {
-    roleBasedLinks.push({
-      name: "Inventory",
-      href: "/dashboard/inventory",
-      icon: Package,
-    });
-  } else {
-    roleBasedLinks.push({
-      name: "View Resources",
-      href: "/dashboard/resources",
-      icon: Eye,
-    });
-  }
+  // if (role === "admin") {
+  //   roleBasedLinks.push({
+  //     name: "Inventory",
+  //     href: "/dashboard/inventory",
+  //     icon: Package,
+  //   });
+  // } else {
+  //   roleBasedLinks.push({
+  //     name: "View Resources",
+  //     href: "/dashboard/resources",
+  //     icon: Eye,
+  //   });
+  // }
 
   return (
     <>
-      {roleBasedLinks.map((link) => {
+      {baseLinks.map((link) => {
         const LinkIcon = link.icon;
         const isActive = pathname === link.href;
 
