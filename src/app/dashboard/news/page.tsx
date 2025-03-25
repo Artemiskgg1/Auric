@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { motion } from "framer-motion";
 
 const NEWS_API_KEY = process.env.NEXT_PUBLIC_NEWS_API_KEY || "";
 const NEWS_API_URL = `https://newsapi.org/v2/everything?q=earthquake OR flood OR cyclone&language=en&sortBy=publishedAt&apiKey=${NEWS_API_KEY}`;
@@ -43,9 +44,20 @@ export default function DisasterNews() {
 
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-bold text-center mb-5">
-        📰 Latest Disaster News
-      </h2>
+      <div className="overflow-hidden px-4">
+        {" "}
+        {/* Adds padding to the container */}
+        <motion.h2
+          className="text-4xl font-bold text-center mb-5 whitespace-nowrap"
+          initial={{ x: "20%" }} // Starts with some padding
+          animate={{ x: ["20%", "-100%"] }} // Moves from padded position to the left
+          transition={{ repeat: Infinity, duration: 40, ease: "linear" }}
+        >
+          📰 Latest Disaster News 🌪️&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Stay Updated
+          on Earthquakes, Floods, and More!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🌊🔥
+          Breaking Alerts 🚨
+        </motion.h2>
+      </div>
 
       {/* India-Specific News */}
       <section className="mb-8">

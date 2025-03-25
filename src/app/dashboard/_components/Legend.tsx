@@ -18,7 +18,7 @@ export default function Legend() {
 
   return (
     <div className="flex justify-center items-center mt-4">
-      <Table className="ml-1 w-[25rem] md:w-full border border-gray-400 text-sm bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white shadow-md">
+      <Table className="ml-1 w-[25rem] md:w-[99.7%] border border-gray-400 text-sm bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white shadow-md">
         <TableBody>
           <TableRow>
             <TableCell className="px-4 py-2 font-semibold">Magnitude</TableCell>
