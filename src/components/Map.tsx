@@ -102,5 +102,10 @@ export default function EarthquakeMap() {
     return magnitude >= 5 ? "#ff0000" : magnitude >= 3 ? "#ffa500" : "#00ff00";
   };
 
-  return <div id="map" className="w-full h-screen"></div>;
+  return (
+    <div
+      id="map"
+      className="md:w-full md:h-[30rem] h-[20rem] w-[25rem] mt-5 ml-1 md:mt-0"
+    ></div>
+  );
 }
