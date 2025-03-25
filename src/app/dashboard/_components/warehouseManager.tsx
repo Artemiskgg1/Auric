@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { PlusCircle, Trash2 } from "lucide-react";
 import { Warehouse } from "@/lib/types";
+import { toast } from "sonner";
 
 interface WarehouseManagerProps {
   warehouses: Warehouse[];
@@ -29,7 +30,6 @@ const WarehouseManager: React.FC<WarehouseManagerProps> = ({
     { name: "", quantity: 0, category: "", status: "Available" },
   ]);
 
-  // Add a new inventory item
   const addInventoryItem = () => {
     setInventory([
       ...inventory,
@@ -37,14 +37,12 @@ const WarehouseManager: React.FC<WarehouseManagerProps> = ({
     ]);
   };
 
-  // Remove an inventory item
   const removeInventoryItem = (index: number) => {
     const updatedInventory = [...inventory];
     updatedInventory.splice(index, 1);
     setInventory(updatedInventory);
   };
 
-  // Handle inventory field changes
   const handleInventoryChange = (
     index: number,
     field: string,
@@ -55,9 +53,11 @@ const WarehouseManager: React.FC<WarehouseManagerProps> = ({
     setInventory(updatedInventory);
   };
 
-  // Submit the warehouse with inventory
   const addWarehouse = async () => {
-    if (!name.trim() || !location.trim()) return;
+    if (!name.trim() || !location.trim()) {
+      toast.error("Warehouse name and location cannot be empty.");
+      return;
+    }
 
     const response = await fetch("/api/warehouse", {
       method: "POST",
@@ -66,7 +66,7 @@ const WarehouseManager: React.FC<WarehouseManagerProps> = ({
     });
 
     if (!response.ok) {
-      console.error("Error adding warehouse");
+      toast.error("Error adding warehouse.");
       return;
     }
 
@@ -78,6 +78,7 @@ const WarehouseManager: React.FC<WarehouseManagerProps> = ({
       { name: "", quantity: 0, category: "", status: "Available" },
     ]);
     setOpen(false);
+    toast.success("Warehouse added successfully!");
   };
 
   return (
@@ -106,7 +107,6 @@ const WarehouseManager: React.FC<WarehouseManagerProps> = ({
               className="mt-2"
             />
 
-            {/* Inventory Fields */}
             <div className="mt-4 space-y-2">
               <p className="font-semibold">Add Inventory Items:</p>
               {inventory.map((item, index) => (
