@@ -87,7 +87,7 @@ export default function DisasterNews() {
         </div>
       </section>
     </div>
-  );w
+  );
 }
 
 const NewsCard = ({ article }: { article: any }) => {
