@@ -1,6 +1,7 @@
 import React from "react";
 import EarthquakeMap from "@/components/Map";
 import Legend from "../../_components/Legend";
+import Predictions from "../../_components/Predictions";
 
 const page = () => {
   return (
@@ -8,6 +9,7 @@ const page = () => {
       <div>
         <EarthquakeMap />
         <Legend />
+        <Predictions />
       </div>
     </div>
   );
